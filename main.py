@@ -22,7 +22,7 @@ from game.operations import (
 )
 
 MIN_PLAYERS = 5
-MAX_PLAYERS = 12
+MAX_PLAYERS = 20
 DEFAULT_DISCUSSION_SECONDS = 120
 PRESET_NAMES = ["Off", "Beginner Game", "Full Game", "No Swaps", "No Hidden Agendas"]
 
