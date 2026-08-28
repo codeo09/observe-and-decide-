@@ -331,32 +331,51 @@ class VotingScreen(Screen):
 
     def _finish_voting(self):
         app = MDApp.get_running_app()
-        imprisoned_name, results = app.game_state.resolve_vote()
+        gs = app.game_state
+        imprisoned_name, results = gs.resolve_vote()
+        
+        # Get vote counts for display
+        vote_counts = gs.tally_votes()
+        
+        # Format imprisoned text
+        if imprisoned_name:
+            imprisoned_text = f"🔒 {imprisoned_name} WAS IMPRISONED"
+        else:
+            imprisoned_text = "⚖️ NOBODY WAS IMPRISONED"
+
+        # Format vote counts
+        vote_info = "VOTE TALLY:\n"
+        if vote_counts:
+            for player_name in sorted(vote_counts.keys(), key=lambda x: vote_counts[x], reverse=True):
+                vote_info += f"  {player_name}: {vote_counts[player_name]} votes\n"
+        else:
+            vote_info += "  No votes cast"
+
+        # Format winners and losers
+        winners = [
+            f"{name}\n      {reason}"
+            for name, outcome, reason in results
+            if outcome == "WINNER"
+        ]
+
+        losers = [
+            f"{name}\n      {reason}"
+            for name, outcome, reason in results
+            if outcome == "LOSER"
+        ]
 
         result_screen = app.root.get_screen("result")
-        if imprisoned_name:
-            result_screen.imprisoned_text = f"{imprisoned_name} was imprisoned."
-        else:
-            result_screen.imprisoned_text = "Nobody was imprisoned."
-            winners = [
-               f"{name} — {reason}"
-               for name, outcome, reason in results
-               if outcome == "WINNER"
-            ]
-
-            losers = [
-                f"{name} — {reason}"
-                for name, outcome, reason in results
-                if outcome == "LOSER"
-            ]
-
-            result_screen.winners_text = "\n\n".join(winners) if winners else "No one"
-            result_screen.losers_text = "\n\n".join(losers) if losers else "No one"
+        result_screen.imprisoned_text = imprisoned_text
+        result_screen.vote_info_text = vote_info
+        result_screen.winners_text = "\n\n".join(winners) if winners else "No one"
+        result_screen.losers_text = "\n\n".join(losers) if losers else "No one"
+        
         app.root.current = "result"
 
 
 class ResultScreen(Screen):
     imprisoned_text = StringProperty("")
+    vote_info_text = StringProperty("")
     winners_text = StringProperty("")
     losers_text = StringProperty("")
 
