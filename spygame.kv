@@ -534,11 +534,23 @@
 
         MDLabel:
             text: root.imprisoned_text
+            font_style: "H6"
             theme_text_color: "Custom"
-            text_color: 1, 1, 1, 1
+            text_color: 1, 0.8, 0.2, 1
             halign: "center"
             size_hint_y: None
             height: dp(40)
+            bold: True
+
+        MDLabel:
+            text: root.vote_info_text
+            theme_text_color: "Custom"
+            text_color: 0.7, 0.7, 0.9, 1
+            halign: "left"
+            size_hint_y: None
+            text_size: self.width, None
+            height: self.texture_size[1]
+            padding: dp(8)
 
         ScrollView:
             do_scroll_x: False
@@ -593,4 +605,3 @@
             size_hint_y: None
             height: dp(50)
             on_release: root.play_again()
-    
