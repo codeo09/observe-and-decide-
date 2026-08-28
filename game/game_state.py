@@ -179,7 +179,7 @@ class GameState:
     def _player_base_outcome(self, player, base_winning_team):
         return "WINNER" if player.role.team == base_winning_team else "LOSER"
 
-        def _compute_personal_results(self, base_winning_team):
+    def _compute_personal_results(self, base_winning_team):
         results = []
         for p in self.players:
             outcome = self._resolve_player_outcome(p, base_winning_team)
