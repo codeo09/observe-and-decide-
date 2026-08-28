@@ -121,11 +121,11 @@ class GameState:
         return None
 
     def cast_vote(self, voter_name, target_name):
-    if voter_name == target_name:
-        return False
+        if voter_name == target_name:
+           return False
 
-    self.votes[voter_name] = target_name
-    return True
+        self.votes[voter_name] = target_name
+        return True
     def all_voted(self):
         return len(self.votes) == len(self.voters())
 
