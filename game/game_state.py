@@ -179,13 +179,67 @@ class GameState:
     def _player_base_outcome(self, player, base_winning_team):
         return "WINNER" if player.role.team == base_winning_team else "LOSER"
 
-    def _compute_personal_results(self, base_winning_team):
+        def _compute_personal_results(self, base_winning_team):
         results = []
         for p in self.players:
             outcome = self._resolve_player_outcome(p, base_winning_team)
-            results.append((p.name, outcome))
+            reason = self._player_outcome_reason(p, base_winning_team, outcome)
+            results.append((p.name, outcome, reason))
         return results
 
+    def _player_outcome_reason(self, player, base_winning_team, outcome):
+        """Explain why this player won or lost."""
+
+        override = player.win_override
+
+        # Normal Agent / Mole result
+        if override is None:
+            if base_winning_team == TEAM_AGENTS:
+                if outcome == "WINNER":
+                    return "A Mole was imprisoned, so the Agency won."
+                return "A Mole was imprisoned, so the Moles lost."
+            else:
+                if outcome == "WINNER":
+                    return "No Mole was imprisoned, so the Moles won."
+                return "No Mole was imprisoned, so the Agency lost."
+
+        kind = override[0]
+
+        # Scapegoat
+        if kind == "self_imprisoned":
+            if outcome == "WINNER":
+                return "You were imprisoned, which was your special objective."
+            return "You were not imprisoned, so your special objective failed."
+
+        # Grudge
+        if kind == "target_imprisoned":
+            target_name = override[1]
+            target = self._find_player(target_name)
+
+            if target is not None and target.is_imprisoned:
+                return f"Your grudge target, {target_name}, was imprisoned."
+            return f"Your grudge target, {target_name}, was not imprisoned."
+
+        # Infatuation
+        if kind == "mirror":
+            target_name = override[1]
+            target = self._find_player(target_name)
+
+            if target is None:
+                return "Your target could not be found, so your normal team result was used."
+
+            target_base_outcome = self._player_base_outcome(
+                target, base_winning_team
+            )
+
+            if target_base_outcome == "WINNER":
+                return f"Your target, {target_name}, was on the winning team."
+            return f"Your target, {target_name}, was on the losing team."
+
+        # Fallback
+        if outcome == "WINNER":
+            return "You were on the winning team."
+        return "You were on the losing team."
     def _resolve_player_outcome(self, player, base_winning_team):
         override = player.win_override
         if override is None:
