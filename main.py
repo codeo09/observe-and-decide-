@@ -338,12 +338,20 @@ class VotingScreen(Screen):
             result_screen.imprisoned_text = f"{imprisoned_name} was imprisoned."
         else:
             result_screen.imprisoned_text = "Nobody was imprisoned."
+            winners = [
+               f"{name} — {reason}"
+               for name, outcome, reason in results
+               if outcome == "WINNER"
+            ]
 
-        winners = [name for name, outcome in results if outcome == "WINNER"]
-        losers = [name for name, outcome in results if outcome == "LOSER"]
-        result_screen.winners_text = ", ".join(winners) if winners else "No one"
-        result_screen.losers_text = ", ".join(losers) if losers else "No one"
+            losers = [
+                f"{name} — {reason}"
+                for name, outcome, reason in results
+                if outcome == "LOSER"
+            ]
 
+            result_screen.winners_text = "\n\n".join(winners) if winners else "No one"
+            result_screen.losers_text = "\n\n".join(losers) if losers else "No one"
         app.root.current = "result"
 
 
