@@ -316,9 +316,12 @@ class VotingScreen(Screen):
         vote_list = self.ids.vote_list
         vote_list.clear_widgets()
         for player in app.game_state.active_players():
-            item = OneLineAvatarIconListItem(text=player.name)
-            item.bind(on_release=lambda instance, name=player.name: self.cast_vote(name))
-            vote_list.add_widget(item)
+    if player.name == self.current_voter_name:
+        continue
+
+    item = OneLineAvatarIconListItem(text=player.name)
+    item.bind(on_release=lambda instance, name=player.name: self.cast_vote(name))
+    vote_list.add_widget(item)
 
     def cast_vote(self, target_name):
         app = MDApp.get_running_app()
