@@ -1,0 +1,577 @@
+#:import dp kivy.metrics.dp
+
+<SetupScreen>:
+    ScrollView:
+        MDBoxLayout:
+            orientation: "vertical"
+            padding: dp(20)
+            spacing: dp(12)
+            md_bg_color: 0.05, 0.05, 0.07, 1
+            size_hint_y: None
+            height: self.minimum_height
+
+            MDLabel:
+                text: "AGENCY BRIEFING"
+                font_style: "H4"
+                halign: "center"
+                theme_text_color: "Custom"
+                text_color: 0.8, 0.1, 0.1, 1
+                size_hint_y: None
+                height: dp(50)
+
+            MDBoxLayout:
+                size_hint_y: None
+                height: dp(48)
+                spacing: dp(10)
+
+                MDLabel:
+                    text: "Players:"
+                    theme_text_color: "Custom"
+                    text_color: 1, 1, 1, 1
+
+                MDIconButton:
+                    icon: "minus-circle"
+                    theme_text_color: "Custom"
+                    text_color: 0.8, 0.1, 0.1, 1
+                    on_release: root.change_player_count(-1)
+
+                MDLabel:
+                    text: root.player_count_text
+                    theme_text_color: "Custom"
+                    text_color: 1, 1, 1, 1
+                    halign: "center"
+
+                MDIconButton:
+                    icon: "plus-circle"
+                    theme_text_color: "Custom"
+                    text_color: 0.8, 0.1, 0.1, 1
+                    on_release: root.change_player_count(1)
+
+            MDBoxLayout:
+                id: name_fields_box
+                orientation: "vertical"
+                spacing: dp(6)
+                size_hint_y: None
+                height: self.minimum_height
+
+            MDLabel:
+                text: "Special Roles"
+                theme_text_color: "Custom"
+                text_color: 0.8, 0.1, 0.1, 1
+                size_hint_y: None
+                height: dp(30)
+
+            MDBoxLayout:
+                orientation: "vertical"
+                size_hint_y: None
+                height: dp(240)
+
+                MDBoxLayout:
+                    MDCheckbox:
+                        id: role_Rogue_Agent
+                        size_hint_x: None
+                        width: dp(48)
+                    MDLabel:
+                        text: "Rogue Agent (Mole, hidden even from other Moles)"
+                        theme_text_color: "Custom"
+                        text_color: 1, 1, 1, 1
+                        font_size: "12sp"
+
+                MDBoxLayout:
+                    MDCheckbox:
+                        id: role_Triple_Agent
+                        size_hint_x: None
+                        width: dp(48)
+                    MDLabel:
+                        text: "Triple Agent (Agent the Moles trust by mistake)"
+                        theme_text_color: "Custom"
+                        text_color: 1, 1, 1, 1
+                        font_size: "12sp"
+
+                MDBoxLayout:
+                    MDCheckbox:
+                        id: role_Deep_Cover_Agent
+                        size_hint_x: None
+                        width: dp(48)
+                    MDLabel:
+                        text: "Deep Cover Agent (Mole, investigates as clean)"
+                        theme_text_color: "Custom"
+                        text_color: 1, 1, 1, 1
+                        font_size: "12sp"
+
+                MDBoxLayout:
+                    MDCheckbox:
+                        id: role_Suspicious_Agent
+                        size_hint_x: None
+                        width: dp(48)
+                    MDLabel:
+                        text: "Suspicious Agent (Agent, investigates as a Mole)"
+                        theme_text_color: "Custom"
+                        text_color: 1, 1, 1, 1
+                        font_size: "12sp"
+
+                MDBoxLayout:
+                    MDCheckbox:
+                        id: role_Service_Loyalist
+                        size_hint_x: None
+                        width: dp(48)
+                    MDLabel:
+                        text: "Service Loyalist (immune to team swaps)"
+                        theme_text_color: "Custom"
+                        text_color: 1, 1, 1, 1
+                        font_size: "12sp"
+
+                MDBoxLayout:
+                    MDCheckbox:
+                        id: role_Virus_Loyalist
+                        size_hint_x: None
+                        width: dp(48)
+                    MDLabel:
+                        text: "Virus Loyalist (immune to team swaps)"
+                        theme_text_color: "Custom"
+                        text_color: 1, 1, 1, 1
+                        font_size: "12sp"
+
+            MDLabel:
+                text: "Operations Preset"
+                theme_text_color: "Custom"
+                text_color: 0.8, 0.1, 0.1, 1
+                size_hint_y: None
+                height: dp(30)
+
+            MDLabel:
+                text: "Selected: " + root.selected_preset
+                theme_text_color: "Custom"
+                text_color: 0.7, 0.7, 0.7, 1
+                size_hint_y: None
+                height: dp(24)
+
+            MDBoxLayout:
+                size_hint_y: None
+                height: dp(44)
+                spacing: dp(6)
+
+                MDRaisedButton:
+                    text: "Off"
+                    md_bg_color: (0.8,0.1,0.1,1) if root.selected_preset=="Off" else (0.25,0.25,0.25,1)
+                    on_release: root.select_preset("Off")
+                MDRaisedButton:
+                    text: "Beginner"
+                    md_bg_color: (0.8,0.1,0.1,1) if root.selected_preset=="Beginner Game" else (0.25,0.25,0.25,1)
+                    on_release: root.select_preset("Beginner Game")
+                MDRaisedButton:
+                    text: "Full"
+                    md_bg_color: (0.8,0.1,0.1,1) if root.selected_preset=="Full Game" else (0.25,0.25,0.25,1)
+                    on_release: root.select_preset("Full Game")
+
+            MDBoxLayout:
+                size_hint_y: None
+                height: dp(44)
+                spacing: dp(6)
+
+                MDRaisedButton:
+                    text: "No Swaps"
+                    md_bg_color: (0.8,0.1,0.1,1) if root.selected_preset=="No Swaps" else (0.25,0.25,0.25,1)
+                    on_release: root.select_preset("No Swaps")
+                MDRaisedButton:
+                    text: "No Hidden Agendas"
+                    md_bg_color: (0.8,0.1,0.1,1) if root.selected_preset=="No Hidden Agendas" else (0.25,0.25,0.25,1)
+                    on_release: root.select_preset("No Hidden Agendas")
+
+            MDBoxLayout:
+                size_hint_y: None
+                height: dp(48)
+                spacing: dp(10)
+
+                MDLabel:
+                    text: "Discussion timer (sec):"
+                    theme_text_color: "Custom"
+                    text_color: 1, 1, 1, 1
+
+                MDTextField:
+                    id: timer_input
+                    text: "120"
+                    input_filter: "int"
+
+            MDRaisedButton:
+                text: "BEGIN MISSION"
+                md_bg_color: 0.8, 0.1, 0.1, 1
+                pos_hint: {"center_x": 0.5}
+                size_hint_y: None
+                height: dp(50)
+                on_release: root.start_game()
+
+
+<RoleRevealScreen>:
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: dp(30)
+        spacing: dp(20)
+        md_bg_color: 0.05, 0.05, 0.07, 1
+
+        MDLabel:
+            text: "Pass the device to:"
+            theme_text_color: "Custom"
+            text_color: 0.7, 0.7, 0.7, 1
+            halign: "center"
+            size_hint_y: None
+            height: dp(30)
+
+        MDLabel:
+            text: root.current_player_name
+            font_style: "H4"
+            theme_text_color: "Custom"
+            text_color: 1, 1, 1, 1
+            halign: "center"
+            size_hint_y: None
+            height: dp(50)
+
+        MDCard:
+            orientation: "vertical"
+            padding: dp(20)
+            spacing: dp(10)
+            md_bg_color: 0.12, 0.02, 0.02, 1
+            size_hint_y: None
+            height: dp(240)
+
+            MDLabel:
+                text: root.role_name_text if root.role_visible else "? ? ?"
+                font_style: "H4"
+                theme_text_color: "Custom"
+                text_color: 0.9, 0.15, 0.15, 1
+                halign: "center"
+
+            MDLabel:
+                text: root.team_text if root.role_visible else ""
+                theme_text_color: "Custom"
+                text_color: 0.6, 0.6, 0.6, 1
+                halign: "center"
+                size_hint_y: None
+                height: dp(24)
+
+            MDLabel:
+                text: root.role_desc_text if root.role_visible else "Tap reveal to view your role"
+                theme_text_color: "Custom"
+                text_color: 1, 1, 1, 1
+                halign: "center"
+
+            MDLabel:
+                text: root.teammates_text if root.role_visible else ""
+                theme_text_color: "Custom"
+                text_color: 0.9, 0.6, 0.1, 1
+                halign: "center"
+                bold: True
+
+        MDRaisedButton:
+            text: "REVEAL ROLE"
+            md_bg_color: 0.8, 0.1, 0.1, 1
+            pos_hint: {"center_x": 0.5}
+            disabled: root.role_visible
+            on_release: root.reveal_role()
+
+        MDRaisedButton:
+            text: "GOT IT — PASS DEVICE"
+            md_bg_color: 0.3, 0.3, 0.3, 1
+            pos_hint: {"center_x": 0.5}
+            disabled: not root.role_visible
+            on_release: root.confirm_and_pass()
+
+
+<OperationsScreen>:
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: dp(24)
+        spacing: dp(16)
+        md_bg_color: 0.05, 0.05, 0.07, 1
+
+        MDLabel:
+            text: "OPERATIONS PHASE"
+            font_style: "H5"
+            theme_text_color: "Custom"
+            text_color: 0.8, 0.1, 0.1, 1
+            halign: "center"
+            size_hint_y: None
+            height: dp(40)
+
+        # -- "no operations enabled" state --
+        MDBoxLayout:
+            orientation: "vertical"
+            spacing: dp(16)
+            opacity: 1 if root.phase == "none" else 0
+            disabled: root.phase != "none"
+            size_hint_y: None if root.phase == "none" else 0
+            height: dp(200) if root.phase == "none" else 0
+
+            MDLabel:
+                text: "No operations are enabled for this game."
+                theme_text_color: "Custom"
+                text_color: 1, 1, 1, 1
+                halign: "center"
+
+            MDRaisedButton:
+                text: "CONTINUE TO DISCUSSION"
+                md_bg_color: 0.8, 0.1, 0.1, 1
+                pos_hint: {"center_x": 0.5}
+                on_release: root.skip_no_operations()
+
+        # -- "pass device" state (first or second player) --
+        MDBoxLayout:
+            orientation: "vertical"
+            spacing: dp(16)
+            opacity: 1 if root.phase in ("pass", "pass2") else 0
+            disabled: root.phase not in ("pass", "pass2")
+            size_hint_y: None if root.phase in ("pass", "pass2") else 0
+            height: dp(220) if root.phase in ("pass", "pass2") else 0
+
+            MDLabel:
+                text: ("Operation: " + root.operation_title_text) if root.phase == "pass" else "Hand the device to:"
+                theme_text_color: "Custom"
+                text_color: 0.7, 0.7, 0.7, 1
+                halign: "center"
+                size_hint_y: None
+                height: dp(30)
+
+            MDLabel:
+                text: root.pass_target_name
+                font_style: "H4"
+                theme_text_color: "Custom"
+                text_color: 1, 1, 1, 1
+                halign: "center"
+                size_hint_y: None
+                height: dp(50)
+
+            MDRaisedButton:
+                text: "I'M READY — CONTINUE"
+                md_bg_color: 0.8, 0.1, 0.1, 1
+                pos_hint: {"center_x": 0.5}
+                on_release: root.confirm_pass() if root.phase == "pass" else root.confirm_pass2()
+
+        # -- "choose" state --
+        MDBoxLayout:
+            orientation: "vertical"
+            spacing: dp(12)
+            opacity: 1 if root.phase == "choose" else 0
+            disabled: root.phase != "choose"
+            size_hint_y: None if root.phase == "choose" else 0
+            height: dp(320) if root.phase == "choose" else 0
+
+            MDLabel:
+                text: root.prompt_text
+                theme_text_color: "Custom"
+                text_color: 1, 1, 1, 1
+                halign: "center"
+
+            ScrollView:
+                MDBoxLayout:
+                    id: choice_box
+                    orientation: "vertical"
+                    spacing: dp(8)
+                    size_hint_y: None
+                    height: self.minimum_height
+                    padding: dp(4)
+
+        # -- "done" state --
+        MDBoxLayout:
+            orientation: "vertical"
+            spacing: dp(16)
+            opacity: 1 if root.phase == "done" else 0
+            disabled: root.phase != "done"
+            size_hint_y: None if root.phase == "done" else 0
+            height: dp(260) if root.phase == "done" else 0
+
+            MDCard:
+                orientation: "vertical"
+                padding: dp(16)
+                md_bg_color: 0.12, 0.02, 0.02, 1
+                size_hint_y: None
+                height: dp(160)
+
+                MDLabel:
+                    text: root.done_text
+                    theme_text_color: "Custom"
+                    text_color: 1, 1, 1, 1
+                    halign: "center"
+
+            MDRaisedButton:
+                text: "GOT IT — PASS DEVICE"
+                md_bg_color: 0.3, 0.3, 0.3, 1
+                pos_hint: {"center_x": 0.5}
+                on_release: root.finish_operation()
+
+
+<HistoryScreen>:
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: dp(20)
+        spacing: dp(12)
+        md_bg_color: 0.05, 0.05, 0.07, 1
+
+        MDLabel:
+            text: "OPERATIONS HISTORY"
+            font_style: "H5"
+            theme_text_color: "Custom"
+            text_color: 0.8, 0.1, 0.1, 1
+            halign: "center"
+            size_hint_y: None
+            height: dp(50)
+
+        ScrollView:
+            MDList:
+                id: history_box
+
+        MDRaisedButton:
+            text: "BACK TO DISCUSSION"
+            md_bg_color: 0.8, 0.1, 0.1, 1
+            pos_hint: {"center_x": 0.5}
+            on_release: root.go_back()
+
+
+<DiscussionScreen>:
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: dp(30)
+        spacing: dp(16)
+        md_bg_color: 0.05, 0.05, 0.07, 1
+
+        MDLabel:
+            text: "DISCUSSION PHASE"
+            font_style: "H5"
+            theme_text_color: "Custom"
+            text_color: 0.8, 0.1, 0.1, 1
+            halign: "center"
+            size_hint_y: None
+            height: dp(50)
+
+        MDLabel:
+            text: root.time_left_text
+            font_style: "H1"
+            theme_text_color: "Custom"
+            text_color: 1, 1, 1, 1
+            halign: "center"
+
+        MDRaisedButton:
+            text: "SEE OPERATIONS HISTORY"
+            md_bg_color: 0.3, 0.3, 0.3, 1
+            pos_hint: {"center_x": 0.5}
+            on_release: root.view_history()
+
+        MDRaisedButton:
+            text: "END DISCUSSION NOW"
+            md_bg_color: 0.8, 0.1, 0.1, 1
+            pos_hint: {"center_x": 0.5}
+            on_release: root.go_to_vote()
+
+
+<VotingScreen>:
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: dp(20)
+        spacing: dp(12)
+        md_bg_color: 0.05, 0.05, 0.07, 1
+
+        MDLabel:
+            text: "WHO DO YOU IMPRISON?"
+            font_style: "H5"
+            theme_text_color: "Custom"
+            text_color: 0.8, 0.1, 0.1, 1
+            halign: "center"
+            size_hint_y: None
+            height: dp(50)
+
+        MDBoxLayout:
+            orientation: "vertical"
+            spacing: dp(16)
+            opacity: 1 if not root.voter_ready else 0
+            disabled: root.voter_ready
+            size_hint_y: None if not root.voter_ready else 0
+            height: dp(220) if not root.voter_ready else 0
+
+            MDLabel:
+                text: "Pass the device to:"
+                theme_text_color: "Custom"
+                text_color: 0.7, 0.7, 0.7, 1
+                halign: "center"
+                size_hint_y: None
+                height: dp(30)
+
+            MDLabel:
+                text: root.current_voter_name
+                font_style: "H4"
+                theme_text_color: "Custom"
+                text_color: 1, 1, 1, 1
+                halign: "center"
+                size_hint_y: None
+                height: dp(50)
+
+            MDRaisedButton:
+                text: "I'M READY TO VOTE"
+                md_bg_color: 0.8, 0.1, 0.1, 1
+                pos_hint: {"center_x": 0.5}
+                on_release: root.confirm_identity()
+
+        ScrollView:
+            MDList:
+                id: vote_list
+                opacity: 1 if root.voter_ready else 0
+                disabled: not root.voter_ready
+
+
+<ResultScreen>:
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: dp(30)
+        spacing: dp(16)
+        md_bg_color: 0.05, 0.05, 0.07, 1
+
+        MDLabel:
+            text: "MISSION OUTCOME"
+            font_style: "H5"
+            theme_text_color: "Custom"
+            text_color: 0.8, 0.1, 0.1, 1
+            halign: "center"
+            size_hint_y: None
+            height: dp(50)
+
+        MDLabel:
+            text: root.imprisoned_text
+            theme_text_color: "Custom"
+            text_color: 1, 1, 1, 1
+            halign: "center"
+            size_hint_y: None
+            height: dp(40)
+
+        MDLabel:
+            text: "WINNERS"
+            theme_text_color: "Custom"
+            text_color: 0.2, 0.8, 0.3, 1
+            halign: "center"
+            bold: True
+            size_hint_y: None
+            height: dp(30)
+
+        MDLabel:
+            text: root.winners_text
+            theme_text_color: "Custom"
+            text_color: 1, 1, 1, 1
+            halign: "center"
+
+        MDLabel:
+            text: "LOSERS"
+            theme_text_color: "Custom"
+            text_color: 0.8, 0.2, 0.2, 1
+            halign: "center"
+            bold: True
+            size_hint_y: None
+            height: dp(30)
+
+        MDLabel:
+            text: root.losers_text
+            theme_text_color: "Custom"
+            text_color: 1, 1, 1, 1
+            halign: "center"
+
+        MDRaisedButton:
+            text: "PLAY AGAIN"
+            md_bg_color: 0.8, 0.1, 0.1, 1
+            pos_hint: {"center_x": 0.5}
+            on_release: root.play_again()
